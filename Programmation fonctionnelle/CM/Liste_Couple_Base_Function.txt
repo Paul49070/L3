@@ -1,0 +1,51 @@
+(* Ceci est un éditeur pour OCaml
+   Entrez votre programme ici, et envoyez-le au toplevel en utilisant le
+   bouton "Évaluer le code" ci-dessous ou [Ctl
+*)
+
+let estPair = function x -> 
+  if x mod 2 = 0 
+  then true 
+  else false
+  
+    
+let longueurChaine = function str -> 
+  String.length str
+    
+let min = function a -> function b ->
+  if a>b then "Le nombre plus petit est : ", b
+  else "Le nombre le plus petit est : ", a
+  
+       
+let testFunc = function p -> 
+  if String.length p > 0 then "Hmmmmmm tu penses à ", p
+  else "rentre un prenom bon dieu", p
+  
+       
+    
+let testCouple = function couple -> 
+  if String.length (fst couple) < String.length (snd couple) then fst couple else snd couple
+      
+let second(_,x,_) = x
+  
+  
+let estVide = function liste -> if List.length liste = 0 then true else false 
+let singleton = function liste -> if List.length liste = 1 then true else false 
+    
+let teteList = function liste ->
+  if estVide liste then failwith "Liste vide"
+  else "Tete de liste : ", List.hd liste
+  
+let queueList = function liste ->
+  if estVide liste then failwith "Liste vide"
+  else "Queue de liste : ", List.tl liste
+         
+let vide = function 
+    [] -> true |
+    _-> false 
+    
+let singleton = function 
+    [_] -> true |
+    _ -> false
+let tete = function [] -> failwith "Liste vide"
+                  | x::_ -> x
