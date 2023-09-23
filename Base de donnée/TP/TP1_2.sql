@@ -1,0 +1,77 @@
+
+--Q1
+--SELECT NomNag, PrenomNag FROM NAGEUR WHERE Nomclub = 'ANGERS NAT SYNCHRO';
+
+--Q2
+--SELECT NomNag, PrenomNag FROM NAGEUR 
+--  WHERE Nomclub in(SELECT NClub FROM CLUB where Region = 'PAYS DE LA LOIRE');
+
+--Q3
+
+/*
+SELECT NAGEUR.NomNag, NAGEUR.PrenomNag, NAGEUR.Nomclub, Note, Annee 
+  FROM RESULTAT JOIN NAGEUR ON RESULTAT.numeronag = NAGEUR.NumeroNag
+    WHERE numeroep IN
+      (SELECT NumeroEp FROM CATEGORIE_EPREUVE 
+          WHERE Type='Parcours à sec' AND Niveau='Synchro Argent') AND Annee=2022
+  ORDER BY Note DESC;
+*/
+
+--Q4
+
+/*
+SELECT DISTINCT OFFICIEL.NomOff, OFFICIEL.PrenomOff 
+  FROM RESULTAT JOIN OFFICIEL ON RESULTAT.NumeroOff = OFFICIEL.NumeroOff
+    WHERE NumeroEp IN
+    (
+      SELECT NumeroEp FROM CATEGORIE_EPREUVE WHERE Niveau='Synchro Argent'
+    );
+*/
+
+--Q5
+
+/*
+SELECT DISTINCT OFFICIEL.NomOff, OFFICIEL.PrenomOff, OFFICIEL.NumeroOff, RESULTAT.numeroep
+  FROM RESULTAT JOIN OFFICIEL ON RESULTAT.NumeroOff = OFFICIEL.NumeroOff
+    WHERE NumeroEp NOT IN
+    (
+      SELECT NumeroEp FROM CATEGORIE_EPREUVE WHERE Niveau!='Synchro Argent'
+    )
+    AND 
+    NumeroEp IN
+    (
+      SELECT NumeroEp FROM CATEGORIE_EPREUVE WHERE Niveau='Synchro Argent'
+    );
+*/
+
+--Q6
+
+/*
+SELECT COUNT(*) FROM OFFICIEL WHERE NomClub 
+  IN(SELECT NClub FROM CLUB WHERE Region='CENTRE VAL DE LOIRE')
+  AND Degre='A'*/
+
+--Q7
+
+/*
+SELECT NAGEUR.NomNag, NAGEUR.prenomNag, AVG(Note), RESULTAT.numeroep 
+FROM RESULTAT JOIN NAGEUR ON NAGEUR.NumeroNag = RESULTAT.numeronag
+GROUP BY NAGEUR.NomNag, NAGEUR.PrenomNag, RESULTAT.numeroep
+*/
+
+--Q8
+
+/*
+SELECT NAGEUR.NomNag, NAGEUR.prenomNag, CATEGORIE_EPREUVE.Type, CATEGORIE_EPREUVE.Niveau, AVG(Note)
+FROM RESULTAT JOIN NAGEUR ON NAGEUR.NumeroNag = RESULTAT.numeronag
+JOIN CATEGORIE_EPREUVE ON RESULTAT.numeroep = CATEGORIE_EPREUVE.numeroep
+GROUP BY NAGEUR.NomNag, NAGEUR.PrenomNag, RESULTAT.numeroep, CATEGORIE_EPREUVE.Type, CATEGORIE_EPREUVE.Niveau
+*/
+
+--Q9
+
+SELECT NAGEUR.NomNag, NAGEUR.prenomNag, CATEGORIE_EPREUVE.Type, CATEGORIE_EPREUVE.Niveau, AVG(Note)
+FROM RESULTAT JOIN NAGEUR ON NAGEUR.NumeroNag = RESULTAT.numeronag
+JOIN CATEGORIE_EPREUVE ON RESULTAT.numeroep = CATEGORIE_EPREUVE.numeroep
+GROUP BY NAGEUR.NomNag, NAGEUR.PrenomNag, RESULTAT.numeroep, CATEGORIE_EPREUVE.Type, CATEGORIE_EPREUVE.Niveau
+HAVING AVG(Note) >= 5
